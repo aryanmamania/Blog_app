@@ -1,13 +1,19 @@
 import React from "react";
 import { Footer } from "flowbite-react";
 import { Link } from "react-router-dom";
-import { BsDribbble, BsFacebook, BsGithub, BsInstagram, BsTwitter} from "react-icons/bs"
+import {
+  BsDribbble,
+  BsFacebook,
+  BsGithub,
+  BsInstagram,
+  BsTwitter,
+} from "react-icons/bs";
 
 const FooterComp = () => {
   return (
     <Footer className="border border-t-8 border-teal-500">
       <div className="w-full max-w-7xl mx-auto">
-        <div className="grid w-full justify-between sm:flex md:grid-cols-1">
+        <div className="grid w-full justify-between sm:flex md:grid-cols-1 ">
           <div className="mt-5">
             <Link
               to="/"
@@ -25,11 +31,11 @@ const FooterComp = () => {
               <Footer.Title title="About" />
               <Footer.LinkGroup col>
                 <Footer.Link href="" target="_blank" rel="noopenenr noreferrer">
-                  hi
+                  My blogs
                 </Footer.Link>
 
                 <Footer.Link href="" target="_blank" rel="noopenenr noreferrer">
-                  hi
+                  My Projects
                 </Footer.Link>
               </Footer.LinkGroup>
             </div>
@@ -63,12 +69,16 @@ const FooterComp = () => {
         </div>
         <Footer.Divider />
         <div className="w-full sm:flex sm:items-center sm:justify-between mb-3">
-          <Footer.Copyright href="#" by="Aryan Mamania" year={new Date().getFullYear()}/>
+          <Footer.Copyright
+            href="#"
+            by="Aryan Mamania"
+            year={new Date().getFullYear()}
+          />
           <div className="flex gap-6 sm:mt-0 mt-4 justify-center">
-            <Footer.Icon href="#" icon={BsFacebook} />  
+            <Footer.Icon href="#" icon={BsFacebook} />
             <Footer.Icon href="#" icon={BsInstagram} />
-            <Footer.Icon href="#" icon ={BsTwitter} />
-            <Footer.Icon href="#" icon ={BsGithub}  />
+            <Footer.Icon href="#" icon={BsTwitter} />
+            <Footer.Icon href="#" icon={BsGithub} />
             <Footer.Icon href="#" icon={BsDribbble} />
           </div>
         </div>
