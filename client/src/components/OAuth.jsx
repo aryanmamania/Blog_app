@@ -5,13 +5,17 @@ import { GoogleAuthProvider, signInWithPopup , getAuth} from 'firebase/auth'
 import { app } from '../firebase'
 
 const OAuth = () => {
+      
       const auth = getAuth(app)
-    const HandleGoogleClick= async () =>{
+    
+    const handleGoogleClick = async () =>{
+
         const provider = new GoogleAuthProvider()
-        provider.setCustomParameters({ promt: 'select_account '})
+      provider.setCustomParameters({ prompt: 'select_account' })
         try{
-            const resutlsFromGoogle = await signInWithPopup(auth, provider)
-            console.log(resutlsFromGoogle)
+            
+            const resultsFromGoogle = await signInWithPopup(auth, provider)
+            console.log(resultsFromGoogle)
         }catch(error){
             console.log(error);
         }
