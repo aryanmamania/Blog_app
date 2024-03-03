@@ -5,6 +5,7 @@ import React from 'react'
   import { useState } from "react";
   import { useDispatch , useSelector } from 'react-redux';
   import { signInSuccess , signInStart, signInFailure } from '../redux/user/userSlice';
+import OAuth from '../components/OAuth';
   
 
   const SignIn = () => {
@@ -15,6 +16,7 @@ import React from 'react'
     const dispatch = useDispatch();
     const navigate = useNavigate();
   
+
     const HandleChange = (e) => {
       setFormData({ ...formData, [e.target.id]: e.target.value.trim() });
     };
@@ -95,6 +97,7 @@ dispatch(signInStart());
                 }
                 
               </Button>
+              <OAuth/>
             </form>
             <div className="flex gap-2 text-sm mt-5">
               <span className="font-semibold">Dont Have An Account ?</span>
