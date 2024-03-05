@@ -1,6 +1,8 @@
 import React from 'react'
 import { useEffect, useState } from "react"
-import { useLocation } from "react-router-dom"
+import { useLocation, Link } from "react-router-dom"
+import {Sidebar} from 'flowbite-react'
+import { HiUser , HiArrowSmRight } from "react-icons/hi"
 
 const DashSideBar = () => {
 
@@ -17,7 +19,7 @@ const DashSideBar = () => {
 
 
   return (
-    <Sidebar classname='w-full md:w-56'>
+    <Sidebar className='w-full md:w-56'>
     <Sidebar.Items>
         <Sidebar.ItemGroup>
             <Link to = '/dashboard?tab=profile'>
@@ -25,7 +27,7 @@ const DashSideBar = () => {
                 Profile
             </Sidebar.Item>
             </Link>
-            <Sidebar.Item active icon={ HiArrowSmRight } classname="cursor-pointer">
+            <Sidebar.Item active icon={ HiArrowSmRight } className="cursor-pointer">
                 Sign Out    
             </Sidebar.Item>
 
