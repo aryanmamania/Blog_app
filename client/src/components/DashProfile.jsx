@@ -12,4 +12,4 @@ const DashProfile = () => {
   )
 }
 
-export default DashProfile
+export default DashProfile;
