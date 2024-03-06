@@ -4,7 +4,7 @@ import { useSelector } from "react-redux";
 
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
-  const [imageFile , setImageFile] = useState(null)
+  const [imageFile , setImageFile] = useState(null);
 
   return (
     <div className="max-w-lg mx:auto p-3 w-full">
