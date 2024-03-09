@@ -76,6 +76,9 @@ const DashProfile = () => {
             className="rounded-full w-full h-full object-cover border-8 border-[lightgray]"
           />
         </div>
+        {imageFileUploadError && (
+          <Alert color="failure">{imageFileUploadError}</Alert>
+        )}
         <TextInput
           type="text"
           id="username"
