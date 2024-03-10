@@ -35,7 +35,7 @@ const DashProfile = () => {
   const uploadImage = async () => {
     console.log("uploading inmage");
   };
-
+  setImageUploadError(null);
   const storage = getStorage(app);
   const fileName = new Date().getTime() + imageFile.name;
   const storageRef = ref(storage, fileName);
@@ -50,6 +50,9 @@ const DashProfile = () => {
       setImageUploadError(
         "Could not Upload image (File must be less than 2 mb)"
       );
+      setImageUploadingProgress(null);
+      setImageFile(null);
+      setImageFileUrl(null);
     },
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
@@ -93,7 +96,7 @@ onClick={() => filePickRef.current.click()}
           <img
             src={imageFileUrl || currentUser.profilePicture}
             alt="user"
-            className="rounded-full w-full h-full object-cover border-8 border-[lightgray]"
+            className={"rounded-full w-full h-full object-cover border-8 border-[lightgray] ${imageFileUploadingProgress && imageFileUploadingProgress < 100 && 'opacity-50'} "}
           />
         </div>
         {imageFileUploadError && (
