@@ -1,4 +1,4 @@
-import { TextInput, Button } from "flowbite-react";
+import { TextInput, Button, Alert } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -40,11 +40,15 @@ const DashProfile = () => {
   const uploadImage = async () => {
     console.log("uploading inmage");
   };
+  setImageFileUploading(true);
   setImageUploadError(null);
   const storage = getStorage(app);
   const fileName = new Date().getTime() + imageFile.name;
   const storageRef = ref(storage, fileName);
   const uploadTask = uploadBytesResumable(storageRef, imageFile);
+  const [imageFileUploading , setImageFileUploading] = useState(false);
+  const [updateUserSuccess, setUpdateUserSuccess] = useState(null);
+  const [updateUserError , setUpdateUserError] = useState(null)
   uploadTask.on(
     "state_changed",
     (snapshot) => {
@@ -58,11 +62,13 @@ const DashProfile = () => {
       setImageUploadingProgress(null);
       setImageFile(null);
       setImageFileUrl(null);
+      setImageFileUploading(false)
     },
     () => {
       getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
         setImageFileUrl(downloadUrl);
         setFormData({...formData, profilePicture: downloadUrl})
+        setImageFileUploading(false)
       });
     }
   );
@@ -73,7 +79,14 @@ const DashProfile = () => {
 
   const handleSubmit = async (e) =>{
 e.preventDefault();
-if(object.keys(formData).length === 0){
+setUpdateUserError(null);
+setUpdateUserSuccess(null);
+if(Object.keys(formData).length === 0){
+  setUpdateUserError('No changes made')
+  return;
+}
+if(imageFileUploading){
+  setUpdateUserError("Please wait for the image to be uploaded")
   return
 }
 try{
@@ -89,12 +102,14 @@ const res = await fetch(`/api/user/update/${currentUser._id}`,{
 const data = await res.json();
 if(!res.ok){
   dispatch(updateFailure(data.mesage));
+  setUpdateUserError(data.message)
 }else{
   dispatch(updateSuccess(data))
-
+   setUpdateUserSuccess("User's profile Updated successfully");
 }
 }catch(error){
 dispatch(updateFailure(error.message))
+setUpdateUserError(error.message)
 }
   }
 
@@ -166,7 +181,19 @@ dispatch(updateFailure(error.message))
         <span className="cursor-pointer">Delete Account</span>
         <span className="cursor-pointer">Sign Out</span>
       </div>
+
+      {updateUserSuccess && (
+        <Alert color='success' className="mt-5">
+          {updateUserSuccess}
+        </Alert>
+      )}
+      {updateUserError &&(
+        <Alert color='failure' className="mt-5">
+          {updateUserError}
+        </Alert>
+      )}
     </div>
+
   );
 };
 
