@@ -9,6 +9,8 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
+import {updateStart , updateFailure , updateSuccess} from '../redux/user/userSlice.js'
+import { UseDispatch } from "react-redux";
 
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -20,6 +22,7 @@ const DashProfile = () => {
 
   })
   const filePickRef = useRef();
+  const dispatch = UseDispatch()
 
   const handleImageChange = (e) => {
     const file = e.target.files[0];
@@ -74,9 +77,24 @@ if(object.keys(formData).length === 0){
   return
 }
 try{
+dispatch(updateStart())
+const res = await fetch(`/api/user/update/${currentUser._id}`,{
+  method: 'PUT',
+  headers:{
+    'Content-Type': 'application/json',
 
+  },
+  body: JSON.stringify(formData)
+});
+const data = await res.json();
+if(!res.ok){
+  dispatch(updateFailure(data.mesage));
+}else{
+  dispatch(updateSuccess(data))
+
+}
 }catch(error){
-  
+dispatch(updateFailure(error.message))
 }
   }
 
