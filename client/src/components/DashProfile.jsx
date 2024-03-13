@@ -112,7 +112,14 @@ dispatch(updateFailure(error.message))
 setUpdateUserError(error.message)
 }
   }
+const handleDelelteUser = async ()=>{
+setShowModal(false);
+try{
 
+}catch(error){
+  
+}
+}
   return (
     <div className="max-w-lg mx:auto p-3 w-full">
       <h1 className="my-7 text-center font-semibold text-3xl">profile</h1>
@@ -198,7 +205,11 @@ setUpdateUserError(error.message)
         <Modal.Body>
           <div className="text-center">
             <HiOutlineExclaimationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
-          <h3 className="mb-5 text-lg text-gray-500 dark: text-gray-400">Are you Sure you want to delete this account</h3>
+          <h3 className="mb-5 text-lg text-gray-500 dark:text-gray-400">Are you Sure you want to delete this account</h3>
+          <div className="flex justify-center gap-4">
+            <Button color="failure" onClick={handleDelelteUser}>Yes, I am Sure</Button>
+            <Button color='gray' onClick={()=> setShowModal(false)}>No cancel</Button>
+          </div>
           </div>
         </Modal.Body>
       </Modal>
