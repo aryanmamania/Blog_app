@@ -1,4 +1,4 @@
-import { TextInput, Button, Alert } from "flowbite-react";
+import { TextInput, Button, Alert, Modal } from "flowbite-react";
 import { useEffect, useRef, useState } from "react";
 import { useSelector } from "react-redux";
 import {
@@ -11,6 +11,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import {updateStart , updateFailure , updateSuccess} from '../redux/user/userSlice.js'
 import { UseDispatch } from "react-redux";
+import {HiOutlineExclaimationCircle } from 'react-icons/hi';
 
 const DashProfile = () => {
   const { currentUser } = useSelector((state) => state.user);
@@ -18,9 +19,8 @@ const DashProfile = () => {
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadingProgress, setImageUploadingProgress] = useState(null);
   const [imageFileUploadError, setImageUploadError] = useState(null);
-  const [formData, setFormData] = useState({
-
-  })
+  const [formData, setFormData] = useState({})
+  const [showModal, setShowModal] = useState(false)
   const filePickRef = useRef();
   const dispatch = UseDispatch()
 
@@ -178,7 +178,7 @@ setUpdateUserError(error.message)
         </Button>
       </form>
       <div className="text-red-500 flex justify-between mt-5">
-        <span className="cursor-pointer">Delete Account</span>
+        <span onClick={()=>setShowModal(true)} className="cursor-pointer">Delete Account</span>
         <span className="cursor-pointer">Sign Out</span>
       </div>
 
@@ -192,6 +192,16 @@ setUpdateUserError(error.message)
           {updateUserError}
         </Alert>
       )}
+      <Modal show={showModal} onClose={()=> setShowModal(false)} popup size='md'>
+
+        <Modal.Header/>
+        <Modal.Body>
+          <div className="text-center">
+            <HiOutlineExclaimationCircle className='h-14 w-14 text-gray-400 dark:text-gray-200 mb-4 mx-auto' />
+          <h3 className="mb-5 text-lg text-gray-500 dark: text-gray-400">Are you Sure you want to delete this account</h3>
+          </div>
+        </Modal.Body>
+      </Modal>
     </div>
 
   );
