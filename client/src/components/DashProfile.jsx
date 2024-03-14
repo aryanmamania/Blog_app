@@ -9,7 +9,7 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import {updateStart , updateFailure , updateSuccess} from '../redux/user/userSlice.js'
+import {updateStart , updateFailure ,updateSuccess , deleteUserFailure, deleteUserStart, deleteUserSuccess} from '../redux/user/userSlice.js'
 import { UseDispatch } from "react-redux";
 import {HiOutlineExclaimationCircle } from 'react-icons/hi';
 
@@ -115,9 +115,18 @@ setUpdateUserError(error.message)
 const handleDelelteUser = async ()=>{
 setShowModal(false);
 try{
-
+dispatch(deleteUserStart());
+const res = await fetch('/api/user/delete/${currentUser._id}', {
+  method: 'DELETE',
+});
+const data = await res.json();
+if(!res.ok){
+  dispatch(deleteUserFailure(data.message));
+}else{
+  dispatch(deleteUserSuccess(data))
+}
 }catch(error){
-  
+  dispatch(deleteUserFailure(error.mesage))
 }
 }
   return (
