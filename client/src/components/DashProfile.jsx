@@ -14,7 +14,7 @@ import { UseDispatch } from "react-redux";
 import {HiOutlineExclaimationCircle } from 'react-icons/hi';
 
 const DashProfile = () => {
-  const { currentUser } = useSelector((state) => state.user);
+  const { currentUser, error } = useSelector((state) => state.user);
   const [imageFile, setImageFile] = useState(null);
   const [imageFileUrl, setImageFileUrl] = useState(null);
   const [imageFileUploadingProgress, setImageUploadingProgress] = useState(null);
@@ -208,6 +208,14 @@ if(!res.ok){
           {updateUserError}
         </Alert>
       )}
+
+{error &&(
+        <Alert color='failure' className="mt-5">
+          {error}
+        </Alert>
+      )}
+
+
       <Modal show={showModal} onClose={()=> setShowModal(false)} popup size='md'>
 
         <Modal.Header/>
