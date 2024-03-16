@@ -9,7 +9,7 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
-import {updateStart , updateFailure ,updateSuccess , deleteUserFailure, deleteUserStart, deleteUserSuccess} from '../redux/user/userSlice.js'
+import {updateStart , updateFailure ,updateSuccess , deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutSuccess} from '../redux/user/userSlice.js'
 import { UseDispatch } from "react-redux";
 import {HiOutlineExclaimationCircle } from 'react-icons/hi';
 
@@ -140,10 +140,10 @@ const data = await res.json();
 if(!res.ok){
   console.log(data.message);
 }else{
-  
+dispatch(signoutSuccess())
 }
   }catch(error){
-
+console.log(error.mesage)
   }
 }
   return (
