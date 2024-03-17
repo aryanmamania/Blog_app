@@ -4,9 +4,10 @@ import { useLocation, Link } from "react-router-dom";
 import { Sidebar } from "flowbite-react";
 import { HiUser, HiArrowSmRight } from "react-icons/hi";
 import { signoutSuccess } from "../redux/user/userSlice";
-import { UseDispatch, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 
-const dispatch = useDispatch()
+
+const dispatch = useDispatch();
 const DashSideBar = () => {
   const location = useLocation();
   const [tab, setTab] = useState("");

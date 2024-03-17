@@ -11,7 +11,7 @@ import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import {updateStart , updateFailure ,updateSuccess , deleteUserFailure, deleteUserStart, deleteUserSuccess, signoutSuccess} from '../redux/user/userSlice.js'
 import { UseDispatch } from "react-redux";
-import {HiOutlineExclaimationCircle } from 'react-icons/hi';
+//import {HiOutlineExclaimationCircle } from 'react-icons/hi';
 
 const DashProfile = () => {
   const { currentUser, error } = useSelector((state) => state.user);
