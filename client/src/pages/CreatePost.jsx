@@ -11,86 +11,76 @@ import {
 import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/style.css";
-import useNavigate from 'react-router-dom'
-
+import useNavigate from "react-router-dom";
 
 const CreatePost = () => {
+  const navigate = useNavigate();
 
-const navigate = useNavigate()
+  const [file, setFile] = useState(null);
+  const [imageUploadProgress, setImageUploadProgress] = useState(null);
+  const [imageUploadError, setImageUploadError] = useState(null);
+  const [formData, setFormData] = useState({});
+  const [publishError, setPublishError] = useState(null);
 
-const [file, setFile] = useState(null);
-const [imageUploadProgress, setImageUploadProgress] = useState(null);
-const [imageUploadError, setImageUploadError] = useState(null);
-const [formData, setFormData] = useState({});
-const [publishError, setPublishError] = useState(null)
-
-
-
-
-const handleUploadImage = async () => {
-  try {
-    if (!file) {
-      setImageUploadError("Please select an image");
-    }
-    const storage = getStorage(app);
-    const fileName = new Date().getTime() + "-" + file.name;
-    const storageRef = ref(storage, fileName);
-    const uploadTask = uploadBytesResumable(storageRef, file);
-    uploadTask.on(
-      "state_changed",
-      (snapshot) => {
-        const progress =
-          (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        setImageUploadProgress(progress.toFixed(0));
-      },
-      (error) => {
-        setImageUploadError("Image Upload failed");
-        setImageUploadProgress(null);
-      },
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
-          setImageUploadProgress(null);
-          setImageUploadError(null);
-          setFormData({ ...formData, image: downloadUrl });
-        });
+  const handleUploadImage = async () => {
+    try {
+      if (!file) {
+        setImageUploadError("Please select an image");
       }
-    );
-  } catch (error) {
-    setImageUploadError("Image upload failed");
-    setImageUploadProgress(null);
-    console.log(error);
-  }
-};
-
-
-const handleSubmit = async(e)=>{
-  e.preventDefault();
-  try{
-    const res = await fetch('/api/post/create',{
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      }, 
-      body: JSON.stringify(formData),
-    });
-    const data = await res.json();
-    if(!res.ok){
-      setPublishError(data.message)
-      return
+      const storage = getStorage(app);
+      const fileName = new Date().getTime() + "-" + file.name;
+      const storageRef = ref(storage, fileName);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+      uploadTask.on(
+        "state_changed",
+        (snapshot) => {
+          const progress =
+            (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+          setImageUploadProgress(progress.toFixed(0));
+        },
+        (error) => {
+          setImageUploadError("Image Upload failed");
+          setImageUploadProgress(null);
+        },
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref).then((downloadUrl) => {
+            setImageUploadProgress(null);
+            setImageUploadError(null);
+            setFormData({ ...formData, image: downloadUrl });
+          });
+        }
+      );
+    } catch (error) {
+      setImageUploadError("Image upload failed");
+      setImageUploadProgress(null);
+      console.log(error);
     }
+  };
 
-    
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const res = await fetch("/api/post/create", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(formData),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setPublishError(data.message);
+        return;
+      }
 
-
-    if(res.ok){
-      setPublishError(null);
-navigate(`/post/${data.slug}`)
+      if (res.ok) {
+        setPublishError(null);
+        navigate(`/post/${data.slug}`);
+      }
+    } catch (error) {
+      setPublishError("Something went Wrong");
     }
-
-  }catch(error){
-    setPublishError('Something went Wrong')
-  }
-}
+  };
   return (
     <div className="p-3 max-w-3xl mx-auto min-h-screen">
       <h1 className="text-center text-3xl my-7 font-semibold">Create A Post</h1>
@@ -102,14 +92,15 @@ navigate(`/post/${data.slug}`)
             required
             id="title"
             className="flex-1"
-            onChange={(e)=> setFormData({...formData, title: e.target.value})
-          }
+            onChange={(e) =>
+              setFormData({ ...formData, title: e.target.value })
+            }
           />
           <Select
-          onChange={(e)=> setFormData({...formData, category: e.target.value})
-        }
+            onChange={(e) =>
+              setFormData({ ...formData, category: e.target.value })
+            }
           >
-
             <option value="uncategorized">Select A Category</option>
             <option value="javascript">JavaScript</option>
             <option value="ReactJs">React Js</option>
@@ -143,34 +134,31 @@ navigate(`/post/${data.slug}`)
           </Button>
         </div>
 
-        {imageUploadError && 
-          <Alert color='failure'>
-            {imageUploadError}
-          </Alert>
-        }
-{formData.image &&  (
-  <img 
-  src={formData.image}
-  alt="upload"
-  className="w-full h-72 object-cover" />
-)}
+        {imageUploadError && <Alert color="failure">{imageUploadError}</Alert>}
+        {formData.image && (
+          <img
+            src={formData.image}
+            alt="upload"
+            className="w-full h-72 object-cover"
+          />
+        )}
         <ReactQuill
           theme="snow"
           placeholder="Write Something..."
           className="h-72 mb-12"
           required
-          onChange={
-            (value)=>{
-              setFormData({...formData, content: value})
-            }
-          }
+          onChange={(value) => {
+            setFormData({ ...formData, content: value });
+          }}
         />
         <Button type="submit" gradientDuoTone="purpleToPink">
           Publish
         </Button>
-        {
-          publishError && <Alert className="mt-5" color='failure'>{publishError}</Alert>
-        }
+        {publishError && (
+          <Alert className="mt-5" color="failure">
+            {publishError}
+          </Alert>
+        )}
       </form>
     </div>
   );
