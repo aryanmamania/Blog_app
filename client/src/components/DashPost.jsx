@@ -7,6 +7,7 @@ const DashPost = () => {
   
 const {currentUser} = useSelector((state)=> state.user)
 const [userPosts , setUserPosts] = useState([])
+const [showMore , setShowMore] = useState(true)
 
   useEffect(()=>{
 const fetchPosts = async ()=>{
@@ -16,6 +17,9 @@ const fetchPosts = async ()=>{
  const data = await res.json()
  if(res.ok){
   setUserPosts(data.posts)
+  if(data.length< 9){
+    setShowMore(false)
+  }
 
  }
   }catch(error){
@@ -26,6 +30,23 @@ if (currentUser.isAdmin) {
   fetchPosts()
 }
   },[currentUser._id])
+
+
+  const handleShowMore = async ()=>{
+const startIndex = userPosts.length;
+try{
+const res = await fetch(`/api/post/getPosts?userId=${currentUser._id}&startIndex=${startIndex}`)
+const data = await res.json();
+if(res.ok){
+  setUserPosts((prev)=>[...prev, ...data.posts]);
+  if(data.posts.length < 9){
+    setShowMore(false)
+  }
+}
+}catch(error){
+  console.log(error.message)
+}
+  }
 
 
 return (
@@ -74,6 +95,13 @@ return (
         </Table.Body>
       ))}
     </Table>
+    {
+      showMore &&(
+        <button onClick={handleShowMore} className='w-full text--teal-500 self-center text-sm py-7'>
+          Show More
+        </button>
+      )
+    }
     </>
   ):(
     <p>You have no posts yet!</p>
