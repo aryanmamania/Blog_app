@@ -12,7 +12,7 @@ import { app } from "../firebase";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/style.css";
 import {useNavigate,  useParams } from "react-router-dom";
-
+import { UseSelector, useSelector } from "react-redux";
 
 
   const [file, setFile] = useState(null);
@@ -23,8 +23,8 @@ import {useNavigate,  useParams } from "react-router-dom";
   const { postId } = useParams();
 
 
-
-
+const navigate = useNavigate();
+const {currentUser} = useSelector((state)=> state.user)
 
 
   const UpdatePost = () => {
@@ -93,8 +93,8 @@ import {useNavigate,  useParams } from "react-router-dom";
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch("/api/post/create", {
-        method: "POST",
+      const res = await fetch(`/api/post/updatePost/${formData._id}/${currentUser._id}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
